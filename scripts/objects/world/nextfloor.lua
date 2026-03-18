@@ -1,11 +1,15 @@
-local WarpBin, super = Class(Event)
+---@class PitFloorWarpBin : Event
+---@overload fun(x: number, y: number) : PitFloorWarpBin
+---@overload fun(x: number, y: number, width: number, height: number) : PitFloorWarpBin
+---@overload fun(x: number, y: number, width: number, height: number, properties: table) : PitFloorWarpBin
+local WarpBin, super = Class(Event, "PitFloorWarpBin")
 
-function WarpBin:init(data)
-    super.init(self, data)
+function WarpBin:init(x, y, width, height, properties)
+    super.init(self, x, y, width or 120, height or 40)
 
     self.solid = true
 
-    self.properties = data.properties or {}
+    self.properties = properties or {}
 
     if self.properties["skin"] then
         self.sprite_b = Sprite("world/events/warpbin/".. self.properties["skin"])
