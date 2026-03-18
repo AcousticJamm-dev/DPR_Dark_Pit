@@ -1,7 +1,9 @@
-local PitEnemy, super = Class(ChaserEnemy, "pit_enemy")
+---@class PitEnemy : ChaserEnemy
+---@overload fun(x: number, y: number, properties: table?) : PitEnemy
+local PitEnemy, super = Class(ChaserEnemy, "PitEnemy")
 
-function PitEnemy:init(data)
-    super.init(self, "dummy", data.x, data.y, data.properties)
+function PitEnemy:init(x, y, properties)
+    super.init(self, "dummy", x, y, properties)
 	
 	self.encounter = "battle_" .. Game:getFlag("pit_floorcount", 1)
 	
@@ -11,10 +13,10 @@ function PitEnemy:init(data)
 	
 	self.sprite.aura = true
 	
-	if data.properties["aura"] == nil then
+	if properties["aura"] == nil then
         self.sprite.aura = Game:getConfig("enemyAuras")
     else
-        self.sprite.aura = data.properties["aura"]
+        self.sprite.aura = properties["aura"]
     end
 end
 
@@ -36,7 +38,7 @@ function PitEnemy:onCollide(player)
 			cutscene:wait(cutscene:walkTo(Game.world.player, "mover", 1, "up"))
 			-- 240, 120
 			Assets.playSound("impact")
-			Game.world:spawnObject(Registry.createEvent("nextfloor", {x=260, y=120, width=120, height=40, properties={}}))
+			Game.world:spawnObject(PitFloorWarpBin(260, 120, 120, 40, {}))
 		end)
 	end
 end
